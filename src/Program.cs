@@ -30,7 +30,7 @@ var modeOption = new Option<OcrOutputMode>(
 );
 
 
-var rootCommand = new RootCommand("Start an OCR analysis using Windows local OcrEngine")
+var rootCommand = new RootCommand("Start an OCR analysis using Windows local OcrEngine.")
 {
     fileOption,
     languageOption,
