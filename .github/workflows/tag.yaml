@@ -25,7 +25,7 @@ jobs:
       - run: dotnet publish
       - name: version
         id: version
-        run: echo "version=$(dotnet run --version)" >>$GITHUB_OUTPUT
+        run: echo "version=$(/home/runner/work/windows_media_ocr_cli/windows_media_ocr_cli/bin/Debug/net481/windows_media_ocr_cli.exe --version)" >>$GITHUB_OUTPUT
       - name: Create Tag
         uses: actions/github-script@v7
         with:
