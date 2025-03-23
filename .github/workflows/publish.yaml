@@ -27,7 +27,7 @@ jobs:
         uses: ietf-tools/semver-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: main
       - name: Create Release
         uses: ncipollo/release-action@v1.16.0
         with:
