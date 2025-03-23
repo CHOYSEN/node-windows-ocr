@@ -1,0 +1,38 @@
+name: create new tag
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.x"
+          cache: true
+      - run: dotnet --version
+      - run: dotnet restore
+      - run: dotnet publish
+      - name: version
+        id: version
+        run: echo "::set-output name=version::$(dotnet run --version)"
+      - name: Create Tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {DIST_VERSION} = process.env          
+            github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/tags/v${{ steps.version.outputs.version }}',
+                sha: context.sha
+            })

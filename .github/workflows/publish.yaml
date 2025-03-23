@@ -1,9 +1,9 @@
-name: publish
+name: publish new release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
   workflow_dispatch:
 
 env:
@@ -21,11 +21,8 @@ jobs:
           cache: true
       - run: dotnet --version
       - run: dotnet restore
-      - run: dotnet publish
-      - name: version
-        id: version
-        run: echo "::set-output name=version::$(dotnet run --version)"
-      - name: Update CHANGELOG
+      - run: dotnet publish -c Release
+      - name: Auto generate CHANGELOG from commits
         id: changelog
         uses: requarks/changelog-action@v1
         with:
@@ -37,13 +34,13 @@ jobs:
         with:
           draft: false
           prerelease: false
-          release_name: ${{ steps.version.outputs.version }}
+          release_name: ${{ github.ref_name }}
           tag_name: ${{ github.ref }}
           body: ${{ steps.changelog.outputs.changes }}
       - name: upload release
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/azblogfilter.linux-amd64.tar.gz
-          asset_name: azblogfilter.linux-amd64.tar.gz
-          asset_content_type: application/gzip
+          asset_path: ./bin/Release/net481/windows_media_ocr_cli.exe
+          asset_name: windows_media_ocr_cli.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
