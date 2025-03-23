@@ -23,19 +23,11 @@ jobs:
       - run: dotnet --version
       - run: dotnet restore
       - run: dotnet publish -c Release
-      - name: Get Next Semantic Version
-        id: semver
-        uses: ietf-tools/semver-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
       - name: Create Release
         uses: ncipollo/release-action@v1.16.0
         with:
           allowUpdates: true
           draft: false
-          name: ${{ steps.semver.outputs.next }}
-          tag: ${{ steps.semver.outputs.next }}
           artifacts: "./bin/**/*.exe"
           generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
