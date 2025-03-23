@@ -22,25 +22,19 @@ jobs:
       - run: dotnet --version
       - run: dotnet restore
       - run: dotnet publish -c Release
-      - name: Auto generate CHANGELOG from commits
-        id: changelog
-        uses: requarks/changelog-action@v1
+      - name: Get Next Semantic Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
         with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
-      - name: create release
-        uses: actions/create-release@v1.1.4
-        id: create_release
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
+      - name: Create Release
+        uses: ncipollo/release-action@v1.16.0
         with:
+          allowUpdates: true
           draft: false
-          prerelease: false
-          release_name: ${{ github.ref_name }}
-          tag_name: ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changes }}
-      - name: upload release
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/Release/net481/windows_media_ocr_cli.exe
-          asset_name: windows_media_ocr_cli.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
+          name: ${{ steps.semver.outputs.next }}
+          tag: ${{ steps.semver.outputs.next }}
+          artifacts: "./bin/**/*.exe"
+          generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
