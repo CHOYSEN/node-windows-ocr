@@ -12,6 +12,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotnet ${{ matrix.dotnet-version }}
@@ -24,7 +25,7 @@ jobs:
       - run: dotnet publish
       - name: version
         id: version
-        run: echo "::set-output name=version::$(dotnet run --version)"
+        run: echo "version=$(dotnet run --version)" >>$GITHUB_OUTPUT
       - name: Create Tag
         uses: actions/github-script@v7
         with:
