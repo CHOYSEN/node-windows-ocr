@@ -9,8 +9,8 @@ export const bin = join(
 );
 
 export interface OCRResult {
-  language: string;
-  result: {
+  Language: string;
+  Result: {
     Lines: {
       Text: string;
       Words: {

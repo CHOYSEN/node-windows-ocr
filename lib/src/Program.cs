@@ -55,8 +55,8 @@ static async Task<List<CustomOcrResult>> RecognizeBatchFromPath(string[] filepat
 
         var result = new CustomOcrResult
         {
-            language = engine.RecognizerLanguage.LanguageTag,
-            result = await engine.RecognizeAsync(softwareBitmap)
+            Language = engine.RecognizerLanguage.LanguageTag,
+            Result = await engine.RecognizeAsync(softwareBitmap)
         };
 
         results.Add(result);
@@ -72,6 +72,6 @@ static bool IsLanguageSupported(string language)
 
 class CustomOcrResult
 {
-    public string language { get; set; }
-    public OcrResult result { get; set; }
+    public string Language { get; set; }
+    public OcrResult Result { get; set; }
 }
