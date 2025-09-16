@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using System.Text.Json;
@@ -20,56 +19,20 @@ var languageOption = new Option<string>(
     description: "The language that should be used during OCR.",
     getDefaultValue: () => "en-US"
 );
-var modeOption = new Option<OcrOutputMode>(
-    name: "--mode",
-    description: "The OCR output mode.",
-    getDefaultValue: () => OcrOutputMode.json
-);
-
 
 var rootCommand = new RootCommand("Start an OCR analysis using Windows local OcrEngine.")
 {
     fileOption,
-    languageOption,
-    modeOption
+    languageOption
 };
-rootCommand.SetHandler(async (files, lang, mode) => await Handler(files, lang, mode), fileOption, languageOption, modeOption);
+rootCommand.SetHandler(async (files, lang) => await Handler(files, lang), fileOption, languageOption);
 
 return await rootCommand.InvokeAsync(args);
 
-static async Task Handler(string[] filepaths, string language, OcrOutputMode mode)
+static async Task Handler(string[] filepaths, string language)
 {
     var results = await RecognizeBatchFromPath(filepaths, language);
-    var txt = "";
-
-    if (mode == OcrOutputMode.json)
-    {
-        txt = JsonSerializer.Serialize(results);
-    }
-    else if (mode == OcrOutputMode.text)
-    {
-        var sb = new StringBuilder();
-        foreach (var result in results)
-        {
-            foreach (var l in result.result.Lines)
-            {
-                var line = new StringBuilder();
-
-                foreach (var word in l.Words)
-                {
-                    line.Append(word.Text);
-                    if (!language.Contains("zh"))
-                    {
-                        line.Append(" ");
-                    }
-                }
-                sb.Append(line);
-                sb.Append(Environment.NewLine);
-            }
-        }
-        txt = sb.ToString();
-    }
-
+    var txt = JsonSerializer.Serialize(results);
     Console.WriteLine(txt);
 }
 
@@ -105,13 +68,6 @@ static async Task<List<CustomOcrResult>> RecognizeBatchFromPath(string[] filepat
 static bool IsLanguageSupported(string language)
 {
     return OcrEngine.IsLanguageSupported(new Language(language));
-}
-
-
-enum OcrOutputMode
-{
-    json,
-    text
 }
 
 class CustomOcrResult
