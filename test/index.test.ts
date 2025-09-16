@@ -7,8 +7,8 @@ describe("recognizeBatchFromPath", async () => {
     const res = await recognizeBatchFromPath([join(__dirname, "./lorem.png")]);
     expect(res).toStrictEqual([
       {
-        language: "en-US",
-        result: {
+        Language: "en-US",
+        Result: {
           Lines: [
             {
               Text: "Lorem ipsum dolor sit amet,",
