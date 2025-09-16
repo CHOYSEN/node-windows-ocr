@@ -1,5 +1,5 @@
 {
-  "name": "windows_media_ocr_cli",
+  "name": "node-windows-ocr",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/js/index.mjs",
@@ -10,6 +10,10 @@
     "build:js": "obuild",
     "build:lib": "cd lib && dotnet publish -c Release --arch win-x86 -o ../bin/net481/win-x86"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
