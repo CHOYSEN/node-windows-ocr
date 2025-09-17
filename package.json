@@ -1,6 +1,6 @@
 {
   "name": "node-windows-ocr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/js/index.mjs",
   "types": "./dist/js/index.d.mts",
