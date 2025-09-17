@@ -1,11 +1,10 @@
-import { defineBuildConfig } from "obuild/config";
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
-  entries: [
-    {
-      type: "bundle",
-      input: ["./src/index.ts"],
+  failOnWarn: false,
+  rollup: {
+    esbuild: {
       minify: true,
     },
-  ],
+  },
 });
