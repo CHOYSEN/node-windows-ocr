@@ -1,12 +1,5 @@
 import spawn from "nano-spawn";
-import { fileURLToPath } from "node:url";
-import { join, dirname } from "node:path";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-export const bin = join(
-  __dirname,
-  "../bin/net481/win-x86/windows_media_ocr_cli.exe"
-);
+import { bin } from "./utils";
 
 export interface OCRResult {
   Language: string;
