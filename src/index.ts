@@ -1,5 +1,6 @@
 import spawn from "nano-spawn";
-import { bin } from "./utils";
+import { join } from "node:path";
+import { EXE_PATH, DEFAULT_MODULE_ROOT } from "./utils";
 
 export interface OCRResult {
   Language: string;
@@ -28,8 +29,12 @@ export interface OCRResult {
 
 export async function recognizeBatchFromPath(
   files: string[],
-  { language }: { language?: string } = {}
+  {
+    language,
+    moduleRoot = DEFAULT_MODULE_ROOT,
+  }: { language?: string; moduleRoot?: string } = {}
 ) {
+  const bin = join(moduleRoot, EXE_PATH);
   const res = await spawn(bin, [
     ...(language ? ["--language", language] : []),
     "--files",
